@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-background text-foreground;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input,
+  textarea,
+  select {
+    font-size: 18px !important;
+  }
+}
+
+@layer components {
+  .touch-target {
+    @apply min-h-touch min-w-touch;
+  }
+}
