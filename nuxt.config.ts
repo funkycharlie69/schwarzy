@@ -30,12 +30,6 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   vite: {
-    vue: {
-      script: {
-        defineModel: false,
-        propsDestructure: false
-      }
-    },
     server: {
       hmr: {
         overlay: false
