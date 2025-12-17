@@ -29,6 +29,11 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  typescript: {
+    typeCheck: false,
+    strict: false
+  },
+
   vite: {
     server: {
       hmr: {

@@ -40,9 +40,18 @@ configs.forEach(({ path, content }) => {
   const dir = dirname(path);
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
+    console.log(`Created directory ${dir}`);
   }
-  if (!existsSync(path)) {
-    writeFileSync(path, JSON.stringify(content, null, 2));
-    console.log(`Created ${path}`);
+
+  // Always write the file to ensure it exists with correct content
+  writeFileSync(path, JSON.stringify(content, null, 2));
+  console.log(`✓ Created/Updated ${path}`);
+
+  // Verify it exists
+  if (existsSync(path)) {
+    console.log(`✓ Verified ${path} exists`);
+  } else {
+    console.error(`✗ ERROR: ${path} does not exist after creation!`);
+    process.exit(1);
   }
 });
