@@ -31,7 +31,13 @@ export default defineNuxtConfig({
 
   typescript: {
     typeCheck: false,
-    strict: false
+    strict: false,
+    tsConfig: {
+      compilerOptions: {
+        verbatimModuleSyntax: true,
+        isolatedModules: true
+      }
+    }
   },
 
   vite: {
