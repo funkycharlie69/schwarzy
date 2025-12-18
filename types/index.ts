@@ -13,6 +13,7 @@ export interface Exercise {
   phase: 'rehab' | 'free-weights' | 'hypertrophy'
   repRangeMin: number
   repRangeMax: number
+  imageSearchQuery?: string // Optional custom search query for Google Images
 }
 
 export interface Set {
@@ -28,6 +29,26 @@ export interface WorkoutLog {
   rating: PainRating
 }
 
+export interface WorkoutProgram {
+  id: string
+  name: string
+  description: string
+  days: ProgramDay[]
+  createdAt: string
+}
+
+export interface ProgramDay {
+  dayNumber: number
+  name: string
+  exerciseIds: string[]
+}
+
+export interface ProgramState {
+  currentProgram: WorkoutProgram | null
+  currentDayIndex: number
+  lastWorkoutDate: string | null
+}
+
 export interface WorkoutState {
   userContext: UserContext[]
   exercises: Exercise[]
@@ -40,6 +61,7 @@ export interface WorkoutState {
     endTime: number | null // timestamp
     originalDuration: number // seconds
   }
+  programState: ProgramState
 }
 
 export interface GhostSession {

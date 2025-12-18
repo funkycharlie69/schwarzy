@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "program": {
+    "name": "Push/Pull/Legs 6-Day Split",
+    "description": "Intermediate program focusing on progressive overload",
+    "days": [
+      {
+        "dayNumber": 1,
+        "name": "Push A",
+        "exerciseIds": [
+          "incline-db-press",
+          "chest-press-machine",
+          "overhead-press-seated-db",
+          "tricep-pushdown-rope",
+          "cable-chest-fly"
+        ]
+      },
+      {
+        "dayNumber": 2,
+        "name": "Pull A",
+        "exerciseIds": [
+          "assisted-pull-up",
+          "lat-pulldown",
+          "seated-cable-row",
+          "face-pulls",
+          "bicep-curl-machine"
+        ]
+      },
+      {
+        "dayNumber": 3,
+        "name": "Legs A",
+        "exerciseIds": [
+          "leg-press",
+          "leg-extension",
+          "leg-curl",
+          "walking-lunges"
+        ]
+      },
+      {
+        "dayNumber": 4,
+        "name": "Push B",
+        "exerciseIds": [
+          "chest-press-machine",
+          "cable-chest-fly",
+          "overhead-press-seated-db",
+          "tricep-pushdown-rope"
+        ]
+      },
+      {
+        "dayNumber": 5,
+        "name": "Pull B",
+        "exerciseIds": [
+          "lat-pulldown",
+          "single-arm-db-row",
+          "seated-cable-row",
+          "db-hammer-curl"
+        ]
+      },
+      {
+        "dayNumber": 6,
+        "name": "Legs B",
+        "exerciseIds": [
+          "leg-press",
+          "romanian-deadlift-db",
+          "leg-curl",
+          "leg-extension"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "program": {
+    "name": "Upper/Lower 4-Day Split",
+    "description": "Beginner-friendly split for consistent progress",
+    "days": [
+      {
+        "dayNumber": 1,
+        "name": "Upper A",
+        "exerciseIds": [
+          "chest-press-machine",
+          "lat-pulldown",
+          "overhead-press-seated-db",
+          "seated-cable-row",
+          "bicep-curl-machine",
+          "tricep-pushdown-rope"
+        ]
+      },
+      {
+        "dayNumber": 2,
+        "name": "Lower A",
+        "exerciseIds": [
+          "leg-press",
+          "leg-curl",
+          "leg-extension",
+          "walking-lunges"
+        ]
+      },
+      {
+        "dayNumber": 3,
+        "name": "Upper B",
+        "exerciseIds": [
+          "incline-db-press",
+          "single-arm-db-row",
+          "cable-chest-fly",
+          "face-pulls",
+          "db-hammer-curl"
+        ]
+      },
+      {
+        "dayNumber": 4,
+        "name": "Lower B",
+        "exerciseIds": [
+          "goblet-squat",
+          "romanian-deadlift-db",
+          "leg-extension",
+          "leg-curl"
+        ]
+      }
+    ]
+  }
+}

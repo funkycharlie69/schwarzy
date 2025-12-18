@@ -25,13 +25,20 @@
       />
     </div>
 
-    <div class="mt-8">
+    <div class="mt-8 space-y-3">
       <BaseButton
         @click="saveAndContinue"
         class="w-full"
       >
         Continue to Warm-up
       </BaseButton>
+
+      <NuxtLink
+        to="/settings"
+        class="block w-full px-6 py-3 bg-foreground/5 text-foreground rounded-lg text-center hover:bg-foreground/10 transition-colors"
+      >
+        Settings
+      </NuxtLink>
     </div>
   </div>
 </template>

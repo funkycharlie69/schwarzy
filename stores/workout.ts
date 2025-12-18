@@ -185,6 +185,11 @@ export const useWorkoutStore = defineStore('workout', () => {
       exerciseId: null,
       endTime: null,
       originalDuration: 90
+    },
+    programState: {
+      currentProgram: null,
+      currentDayIndex: 0,
+      lastWorkoutDate: null
     }
   })
 
@@ -194,6 +199,15 @@ export const useWorkoutStore = defineStore('workout', () => {
     if (firstExercise && !('phase' in firstExercise)) {
       // Old data detected, update with new exercises
       state.value.exercises = DEFAULT_EXERCISES
+    }
+
+    // Migrate programState if missing
+    if (!state.value.programState) {
+      state.value.programState = {
+        currentProgram: null,
+        currentDayIndex: 0,
+        lastWorkoutDate: null
+      }
     }
   }
   migrateExercises()
@@ -208,6 +222,27 @@ export const useWorkoutStore = defineStore('workout', () => {
   const todayLogs = computed(() =>
     state.value.logs.filter(log => log.date === todayDate.value)
   )
+
+  // Program-related getters
+  const hasActiveProgram = computed(() => {
+    return state.value.programState.currentProgram !== null
+  })
+
+  const currentProgramDay = computed(() => {
+    const program = state.value.programState.currentProgram
+    if (!program) return null
+    return program.days[state.value.programState.currentDayIndex]
+  })
+
+  const todayExercises = computed(() => {
+    const program = state.value.programState.currentProgram
+    if (!program) return state.value.exercises
+
+    const currentDay = program.days[state.value.programState.currentDayIndex]
+    return state.value.exercises.filter(ex =>
+      currentDay.exerciseIds.includes(ex.id)
+    )
+  })
 
   // Get last session for an exercise (excluding today)
   const getLastSession = (exerciseId: string): WorkoutLog | null => {
@@ -354,6 +389,14 @@ export const useWorkoutStore = defineStore('workout', () => {
   }
 
   const finishWorkout = () => {
+    // Auto-advance program day if using a program
+    const program = state.value.programState.currentProgram
+    if (program) {
+      const nextDayIndex = (state.value.programState.currentDayIndex + 1) % program.days.length
+      state.value.programState.currentDayIndex = nextDayIndex
+      state.value.programState.lastWorkoutDate = todayDate.value
+    }
+
     state.value.workoutActive = false
     state.value.currentWorkoutDate = null
     state.value.restTimerState = {
@@ -396,6 +439,126 @@ export const useWorkoutStore = defineStore('workout', () => {
     }, 0)
   }
 
+  // Export data as JSON file
+  const exportData = () => {
+    const exportData = {
+      version: '1.0.0',
+      exportedAt: new Date().toISOString(),
+      data: state.value
+    }
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+      type: 'application/json'
+    })
+
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `schwarzy-backup-${new Date().toISOString().split('T')[0]}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  // Import full backup data
+  const importData = (jsonString: string): { success: boolean; error?: string } => {
+    try {
+      const imported = JSON.parse(jsonString)
+      if (!imported.version || !imported.data) {
+        return { success: false, error: 'Invalid backup file format' }
+      }
+
+      state.value = imported.data
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: 'Failed to parse JSON file' }
+    }
+  }
+
+  // Import workout program
+  const importProgram = (jsonString: string): { success: boolean; error?: string } => {
+    try {
+      const imported = JSON.parse(jsonString)
+      if (!imported.version || !imported.program) {
+        return { success: false, error: 'Invalid program file format' }
+      }
+
+      const programData = imported.program
+
+      // Validate structure
+      if (!programData.name || !programData.days || !Array.isArray(programData.days)) {
+        return { success: false, error: 'Invalid program structure' }
+      }
+
+      // Merge new exercises if provided
+      if (programData.exercises && Array.isArray(programData.exercises)) {
+        programData.exercises.forEach((newExercise: Exercise) => {
+          const exists = state.value.exercises.find(ex => ex.id === newExercise.id)
+          if (!exists) {
+            state.value.exercises.push(newExercise)
+          }
+        })
+      }
+
+      // Validate all exercise IDs exist
+      const allExerciseIds = new Set(state.value.exercises.map(ex => ex.id))
+      for (const day of programData.days) {
+        for (const exerciseId of day.exerciseIds) {
+          if (!allExerciseIds.has(exerciseId)) {
+            return {
+              success: false,
+              error: `Exercise ID "${exerciseId}" not found`
+            }
+          }
+        }
+      }
+
+      // Create program
+      const program = {
+        id: `program-${Date.now()}`,
+        name: programData.name,
+        description: programData.description || '',
+        days: programData.days,
+        createdAt: new Date().toISOString()
+      }
+
+      // Update program state
+      state.value.programState = {
+        currentProgram: program,
+        currentDayIndex: 0,
+        lastWorkoutDate: null
+      }
+
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: 'Failed to parse JSON file' }
+    }
+  }
+
+  // Clear current program
+  const clearProgram = () => {
+    state.value.programState = {
+      currentProgram: null,
+      currentDayIndex: 0,
+      lastWorkoutDate: null
+    }
+  }
+
+  // Manually set program day
+  const setProgramDay = (dayIndex: number) => {
+    const program = state.value.programState.currentProgram
+    if (!program) return
+
+    if (dayIndex >= 0 && dayIndex < program.days.length) {
+      state.value.programState.currentDayIndex = dayIndex
+    }
+  }
+
+  // Get Google Image Search URL for exercise
+  const getExerciseImageSearchUrl = (exercise: Exercise): string => {
+    const query = exercise.imageSearchQuery || `${exercise.name} gym machine`
+    return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`
+  }
+
   return {
     // State
     state,
@@ -404,6 +567,9 @@ export const useWorkoutStore = defineStore('workout', () => {
     todayDate,
     todayContext,
     todayLogs,
+    hasActiveProgram,
+    currentProgramDay,
+    todayExercises,
 
     // Methods
     getLastSession,
@@ -418,6 +584,12 @@ export const useWorkoutStore = defineStore('workout', () => {
     finishWorkout,
     startRestTimer,
     extendRestTimer,
-    clearRestTimer
+    clearRestTimer,
+    exportData,
+    importData,
+    importProgram,
+    clearProgram,
+    setProgramDay,
+    getExerciseImageSearchUrl
   }
 })

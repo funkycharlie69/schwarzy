@@ -19,8 +19,21 @@
       <p class="text-sm text-foreground/80">{{ recommendation.message }}</p>
     </div>
 
-    <!-- Phase Tabs -->
-    <div class="flex gap-2 mb-6 overflow-x-auto">
+    <!-- Program Day Header -->
+    <div
+      v-if="store.hasActiveProgram"
+      class="mb-6 p-4 bg-accent-green/10 border border-accent-green/30 rounded-lg"
+    >
+      <h3 class="font-semibold text-accent-green mb-1">
+        {{ store.currentProgramDay?.name }} (Day {{ store.currentProgramDay?.dayNumber }})
+      </h3>
+      <p class="text-sm text-foreground/80">
+        {{ store.state.programState.currentProgram?.name }}
+      </p>
+    </div>
+
+    <!-- Phase Tabs (only show when no program) -->
+    <div v-if="!store.hasActiveProgram" class="flex gap-2 mb-6 overflow-x-auto">
       <button
         v-for="phase in phases"
         :key="phase.value"
@@ -75,9 +88,15 @@ const phases = [
 ] as const
 
 const filteredExercises = computed(() => {
-  return store.state.exercises.filter(
-    exercise => exercise.phase === selectedPhase.value
-  )
+  if (store.hasActiveProgram) {
+    // Program mode - show today's exercises
+    return store.todayExercises
+  } else {
+    // Free mode - show filtered by phase
+    return store.state.exercises.filter(
+      exercise => exercise.phase === selectedPhase.value
+    )
+  }
 })
 
 const recommendation = computed(() => {
