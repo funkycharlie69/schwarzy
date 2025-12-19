@@ -5,7 +5,7 @@
     :placeholder="placeholder"
     :inputmode="inputmode"
     @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    class="w-full px-4 py-3 text-lg bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-foreground/20"
+    class="w-full px-4 py-3 text-base bg-input border-2 border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-green/40 placeholder:text-foreground/40"
   />
 </template>
 

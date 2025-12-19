@@ -1,52 +1,89 @@
 <template>
-  <div
-    v-if="isActive"
-    class="fixed bottom-0 left-0 right-0 bg-input border-t border-border p-4"
-  >
-    <div class="max-w-md mx-auto">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-sm text-foreground/60">Rest Timer</span>
-        <button
-          @click="clearTimer"
-          class="text-sm text-foreground/60 hover:text-foreground"
-        >
-          Skip
-        </button>
+  <Transition name="timer-overlay">
+    <div
+      v-if="isActive"
+      class="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6"
+    >
+      <!-- Skip button top right -->
+      <button
+        @click="clearTimer"
+        class="absolute top-6 right-6 text-base font-semibold text-foreground/60 hover:text-foreground active:text-accent-red px-4 py-2 min-h-[44px]"
+      >
+        Skip Rest
+      </button>
+
+      <!-- Rest Timer Label -->
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-foreground/70 text-center">Rest Timer</h2>
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="flex-1">
-          <div class="text-3xl font-bold font-mono">
+      <!-- Circular Progress Ring -->
+      <div class="relative w-80 h-80 mb-12">
+        <!-- Background circle -->
+        <svg class="absolute inset-0 -rotate-90" viewBox="0 0 320 320">
+          <circle
+            cx="160"
+            cy="160"
+            r="140"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="16"
+            class="text-foreground/10"
+          />
+          <!-- Progress circle -->
+          <circle
+            cx="160"
+            cy="160"
+            r="140"
+            fill="none"
+            :stroke="remainingSeconds <= 10 ? '#ef4444' : remainingSeconds <= 30 ? '#eab308' : '#22c55e'"
+            stroke-width="16"
+            stroke-linecap="round"
+            :stroke-dasharray="circumference"
+            :stroke-dashoffset="strokeOffset"
+            class="transition-all duration-300 ease-linear"
+          />
+        </svg>
+
+        <!-- Time display in center -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div class="text-8xl font-bold font-mono tabular-nums tracking-tight">
             {{ formatTime(remainingSeconds) }}
           </div>
-          <div class="w-full h-2 bg-background rounded-full mt-2 overflow-hidden">
-            <div
-              class="h-full bg-accent-green transition-all duration-1000"
-              :style="{ width: `${progress}%` }"
-            />
-          </div>
         </div>
-
-        <button
-          @click="extendTimer"
-          class="touch-target bg-foreground text-background rounded-lg px-4 py-3 font-semibold"
-        >
-          +30s
-        </button>
       </div>
+
+      <!-- Action button -->
+      <button
+        @click="extendTimer"
+        class="w-full max-w-xs h-16 bg-foreground text-background rounded-xl font-bold text-lg active:scale-95 transition-transform shadow-lg"
+      >
+        Add 30 Seconds
+      </button>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script setup lang="ts">
 import { useWorkoutStore } from '~/stores/workout'
+import { useHaptic } from '~/composables/useHaptic'
 
 const store = useWorkoutStore()
+const { haptic } = useHaptic()
 
 const isActive = computed(() => store.state.restTimerState.endTime !== null)
 
 const remainingSeconds = ref(0)
 const progress = ref(100)
+const alerted = ref(false)
+
+// Circular progress ring calculations
+const radius = 140
+const circumference = 2 * Math.PI * radius
+const strokeOffset = computed(() => {
+  // Progress goes from 100 to 0, stroke-dashoffset goes from 0 to circumference
+  return circumference * (1 - progress.value / 100)
+})
 
 let intervalId: NodeJS.Timeout | null = null
 
@@ -89,6 +126,7 @@ const clearTimer = () => {
 
 watch(isActive, (active) => {
   if (active) {
+    alerted.value = false
     updateTimer()
     intervalId = setInterval(updateTimer, 100)
   } else if (intervalId) {
@@ -97,9 +135,46 @@ watch(isActive, (active) => {
   }
 }, { immediate: true })
 
+watch(remainingSeconds, (newValue) => {
+  if (newValue === 0 && !alerted.value && isActive.value) {
+    // Haptic feedback
+    haptic('warning')
+
+    // Repeat haptic for emphasis
+    setTimeout(() => haptic('warning'), 300)
+
+    alerted.value = true
+  }
+})
+
 onUnmounted(() => {
   if (intervalId) {
     clearInterval(intervalId)
   }
 })
 </script>
+
+<style scoped>
+.timer-overlay-enter-active,
+.timer-overlay-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.timer-overlay-enter-from,
+.timer-overlay-leave-to {
+  opacity: 0;
+}
+
+.timer-overlay-enter-active > div,
+.timer-overlay-leave-active > div {
+  transition: transform 0.3s ease;
+}
+
+.timer-overlay-enter-from > div {
+  transform: scale(0.9);
+}
+
+.timer-overlay-leave-to > div {
+  transform: scale(0.9);
+}
+</style>

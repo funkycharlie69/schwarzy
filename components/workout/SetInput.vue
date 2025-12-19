@@ -1,59 +1,131 @@
 <template>
-  <div class="flex items-center gap-2">
-    <div class="flex-1">
-      <label class="text-xs font-medium text-foreground/60 mb-1 block">Weight (kg)</label>
-      <input
-        type="number"
-        v-model.number="weight"
-        placeholder="0"
-        inputmode="decimal"
-        :readonly="completed"
-        :class="[
-          'w-full px-4 py-3 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-foreground/20',
-          completed
-            ? 'bg-input/50 border border-accent-green/50 text-foreground cursor-not-allowed'
-            : 'bg-input border border-border'
-        ]"
-        @focus="handleFocus"
-      />
+  <div :class="['space-y-2', justCompleted ? 'animate-set-complete' : '']">
+    <!-- Set label row -->
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 flex items-center justify-center bg-foreground/10 rounded-full text-sm font-bold">
+        {{ setNumber }}
+      </div>
+      <span class="text-sm font-semibold text-foreground/70">
+        {{ completed ? 'Set ' + setNumber + ' - Completed' : 'Set ' + setNumber }}
+      </span>
     </div>
-    <div class="flex-1">
-      <label class="text-xs font-medium text-foreground/60 mb-1 block">Reps</label>
-      <input
-        type="number"
-        v-model.number="reps"
-        placeholder="0"
-        inputmode="numeric"
-        :readonly="completed"
+
+    <!-- Input sections stacked vertically for mobile -->
+    <div class="space-y-3">
+      <!-- Weight Input with Stepper -->
+      <div>
+        <label class="text-sm font-semibold text-foreground/70 mb-2 block">Weight (kg)</label>
+        <div class="flex items-center gap-2.5">
+          <button
+            v-if="!completed"
+            @click="adjustWeight(-2.5)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            type="button"
+            aria-label="Decrease weight"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            </svg>
+          </button>
+          <input
+            type="text"
+            v-model="weightInput"
+            placeholder="0"
+            inputmode="decimal"
+            :readonly="completed"
+            :class="[
+              'flex-1 px-3 py-4 text-2xl font-bold text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-green/40 min-h-[56px]',
+              completed
+                ? 'bg-input/50 border-2 border-accent-green/60 text-foreground cursor-not-allowed'
+                : 'bg-input border-2 border-border'
+            ]"
+            @input="handleWeightInput"
+            @focus="handleFocus"
+          />
+          <button
+            v-if="!completed"
+            @click="adjustWeight(2.5)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            type="button"
+            aria-label="Increase weight"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Reps Input with Stepper -->
+      <div>
+        <label class="text-sm font-semibold text-foreground/70 mb-2 block">Reps</label>
+        <div class="flex items-center gap-2.5">
+          <button
+            v-if="!completed"
+            @click="adjustReps(-1)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            type="button"
+            aria-label="Decrease reps"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            </svg>
+          </button>
+          <input
+            type="number"
+            v-model.number="reps"
+            placeholder="0"
+            inputmode="numeric"
+            :readonly="completed"
+            :class="[
+              'flex-1 px-3 py-4 text-2xl font-bold text-center rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-green/40 min-h-[56px]',
+              completed
+                ? 'bg-input/50 border-2 border-accent-green/60 text-foreground cursor-not-allowed'
+                : 'bg-input border-2 border-border'
+            ]"
+            @focus="handleFocus"
+          />
+          <button
+            v-if="!completed"
+            @click="adjustReps(1)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            type="button"
+            aria-label="Increase reps"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Complete/Edit Button - Full Width -->
+      <button
+        @click="toggleComplete"
+        :disabled="!completed && (!weight || !reps)"
         :class="[
-          'w-full px-4 py-3 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-foreground/20',
+          'w-full h-14 flex items-center justify-center gap-2 rounded-lg font-semibold text-base transition-all duration-200',
           completed
-            ? 'bg-input/50 border border-accent-green/50 text-foreground cursor-not-allowed'
-            : 'bg-input border border-border'
+            ? 'bg-accent-green text-white hover:bg-accent-yellow active:scale-[0.98] shadow-md'
+            : 'bg-input border-2 border-border hover:bg-foreground/10 hover:border-accent-green/40',
+          !completed && (!weight || !reps) ? 'opacity-40 cursor-not-allowed' : ''
         ]"
-        @focus="handleFocus"
-      />
+        :title="completed ? 'Edit this set' : 'Mark as complete'"
+        type="button"
+      >
+        <Transition name="icon-swap" mode="out-in">
+          <Check v-if="!completed" :size="22" :stroke-width="2.5" key="check" />
+          <Edit v-else :size="20" :stroke-width="2.5" key="edit" />
+        </Transition>
+        <span>{{ completed ? 'Edit Set' : 'Complete Set' }}</span>
+      </button>
     </div>
-    <button
-      @click="toggleComplete"
-      :disabled="!completed && (!weight || !reps)"
-      :class="[
-        'touch-target rounded-lg px-4',
-        completed
-          ? 'bg-accent-green text-white hover:bg-accent-yellow'
-          : 'bg-input border border-border hover:bg-zinc-800',
-        !completed && (!weight || !reps) ? 'opacity-50 cursor-not-allowed' : ''
-      ]"
-      :title="completed ? 'Click to edit' : 'Mark as complete'"
-    >
-      <Check v-if="!completed" :size="24" />
-      <Edit v-else :size="24" />
-    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Check, Edit } from 'lucide-vue-next'
+import { useHaptic } from '~/composables/useHaptic'
 
 interface Props {
   modelValue: {
@@ -61,6 +133,7 @@ interface Props {
     reps: number
     completed: boolean
   }
+  setNumber: number
 }
 
 const props = defineProps<Props>()
@@ -71,8 +144,31 @@ const emit = defineEmits<{
 }>()
 
 const weight = ref(props.modelValue.weight || 0)
+const weightInput = ref(props.modelValue.weight ? String(props.modelValue.weight) : '')
 const reps = ref(props.modelValue.reps || 0)
 const completed = ref(props.modelValue.completed || false)
+const justCompleted = ref(false)
+
+const { haptic } = useHaptic()
+
+// Handle weight input with comma-to-period conversion
+const handleWeightInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  let value = target.value
+
+  // Replace comma with period for decimal separator
+  value = value.replace(',', '.')
+
+  // Update the input field with corrected value
+  if (value !== target.value) {
+    target.value = value
+    weightInput.value = value
+  }
+
+  // Parse as number
+  const numValue = parseFloat(value)
+  weight.value = isNaN(numValue) ? 0 : numValue
+}
 
 watch([weight, reps], () => {
   emit('update:modelValue', {
@@ -82,10 +178,39 @@ watch([weight, reps], () => {
   })
 })
 
+// Update weightInput when weight changes externally
+watch(() => props.modelValue.weight, (newWeight) => {
+  if (newWeight !== weight.value) {
+    weight.value = newWeight
+    weightInput.value = newWeight ? String(newWeight) : ''
+  }
+})
+
+// Adjust weight by increment (usually +/- 2.5kg)
+const adjustWeight = (increment: number) => {
+  if (completed.value) return
+
+  const newWeight = Math.max(0, weight.value + increment)
+  weight.value = Math.round(newWeight * 2) / 2 // Round to nearest 0.5
+  weightInput.value = String(weight.value)
+}
+
+// Adjust reps by increment (usually +/- 1)
+const adjustReps = (increment: number) => {
+  if (completed.value) return
+
+  const newReps = Math.max(0, reps.value + increment)
+  reps.value = newReps
+}
+
 const toggleComplete = () => {
   if (!completed.value) {
     // Completing the set
     if (!weight.value || !reps.value) return
+
+    haptic('success')
+    justCompleted.value = true
+    setTimeout(() => justCompleted.value = false, 300)
 
     completed.value = true
     emit('update:modelValue', {
@@ -96,6 +221,7 @@ const toggleComplete = () => {
     emit('complete')
   } else {
     // Uncompleting the set to allow editing
+    haptic('light')
     completed.value = false
     emit('update:modelValue', {
       weight: weight.value,
@@ -113,3 +239,30 @@ const handleFocus = (event: FocusEvent) => {
   }, 300) // Delay to allow keyboard animation
 }
 </script>
+
+<style scoped>
+.icon-swap-enter-active,
+.icon-swap-leave-active {
+  transition: all 0.15s ease;
+}
+
+.icon-swap-enter-from {
+  opacity: 0;
+  transform: scale(0.8) rotate(-10deg);
+}
+
+.icon-swap-leave-to {
+  opacity: 0;
+  transform: scale(0.8) rotate(10deg);
+}
+
+@keyframes setComplete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.animate-set-complete {
+  animation: setComplete 0.3s ease-out;
+}
+</style>

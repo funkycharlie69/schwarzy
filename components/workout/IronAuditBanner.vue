@@ -2,11 +2,14 @@
   <div
     v-if="suggestion"
     :class="[
-      'p-4 rounded-lg mb-4',
+      'p-3 rounded-lg border-l-4',
       bannerClass
     ]"
   >
-    <p class="font-semibold">{{ suggestion.message }}</p>
+    <div class="flex items-start gap-2">
+      <span class="text-lg leading-none mt-0.5 flex-shrink-0">{{ iconForSeverity }}</span>
+      <p class="text-sm font-semibold leading-snug">{{ suggestion.message }}</p>
+    </div>
   </div>
 </template>
 
@@ -23,10 +26,21 @@ const bannerClass = computed(() => {
   if (!props.suggestion) return ''
 
   const classes = {
-    success: 'bg-accent-green/20 text-accent-green border border-accent-green/30',
-    warning: 'bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30',
-    danger: 'bg-accent-red/20 text-accent-red border border-accent-red/30'
+    success: 'bg-accent-green/10 text-accent-green border-accent-green',
+    warning: 'bg-accent-yellow/10 text-accent-yellow border-accent-yellow',
+    danger: 'bg-accent-red/10 text-accent-red border-accent-red'
   }
   return classes[props.suggestion.severity]
+})
+
+const iconForSeverity = computed(() => {
+  if (!props.suggestion) return ''
+
+  const icons = {
+    success: '💪',
+    warning: '⚠️',
+    danger: '🚨'
+  }
+  return icons[props.suggestion.severity]
 })
 </script>

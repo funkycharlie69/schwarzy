@@ -14,6 +14,8 @@ export interface Exercise {
   repRangeMin: number
   repRangeMax: number
   imageSearchQuery?: string // Optional custom search query for Google Images
+  defaultWeight?: number // Default starting weight in kg
+  defaultReps?: number // Default starting reps
 }
 
 export interface Set {
@@ -62,6 +64,7 @@ export interface WorkoutState {
     originalDuration: number // seconds
   }
   programState: ProgramState
+  todayCompletedExercises: string[] // exerciseId[] for completion tracking
 }
 
 export interface GhostSession {

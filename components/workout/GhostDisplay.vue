@@ -1,20 +1,20 @@
 <template>
-  <div v-if="ghost" class="space-y-2">
-    <div class="flex items-center gap-2 text-sm text-foreground/60">
-      <Ghost :size="16" />
-      <span>Last session: {{ formatDate(ghost.date) }}</span>
-      <span :class="ratingColor">{{ ratingIcon }}</span>
+  <div v-if="ghost" class="p-3 bg-input/30 border border-border rounded-lg">
+    <div class="flex items-center gap-2 mb-1.5">
+      <Ghost :size="16" class="text-foreground/40 flex-shrink-0" />
+      <span class="text-sm text-foreground/60">{{ formatDate(ghost.date) }}</span>
+      <span :class="[ratingColor, 'ml-auto']">{{ ratingIcon }}</span>
     </div>
-    <div class="text-sm">
-      <span class="font-medium">{{ ghost.sets.length }} sets</span>
-      <span class="text-foreground/60 mx-2">|</span>
-      <span class="font-medium">{{ ghost.totalVolume }}kg total</span>
+    <div class="text-base font-semibold">
+      <span class="text-foreground">{{ ghost.sets.length }} sets</span>
+      <span class="text-foreground/30 mx-2">·</span>
+      <span class="text-foreground">{{ ghost.totalVolume }}kg</span>
     </div>
   </div>
-  <div v-else class="p-4 bg-input/50 border border-border rounded-lg">
+  <div v-else class="p-3 bg-input/30 border border-border rounded-lg">
     <div class="flex items-center gap-2 text-sm text-foreground/60">
-      <Ghost :size="16" />
-      <span>No previous session - Time to set a baseline!</span>
+      <Ghost :size="16" class="flex-shrink-0" />
+      <span class="font-medium">First time - Set your baseline</span>
     </div>
   </div>
 </template>

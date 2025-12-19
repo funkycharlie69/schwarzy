@@ -1,8 +1,30 @@
 <template>
-  <div class="min-h-screen p-6 pb-32">
+  <div
+    :class="[
+      'min-h-screen p-6 transition-all duration-300',
+      store.state.restTimerState.endTime ? 'pb-48' : 'pb-32'
+    ]"
+  >
     <header class="mb-6">
-      <h1 class="text-3xl font-bold mb-2">Today's Workout</h1>
-      <p class="text-foreground/60">{{ formatDate(store.todayDate) }}</p>
+      <div class="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <h1 class="text-3xl font-bold mb-1">Today's Workout</h1>
+          <p class="text-sm text-foreground/60">{{ formatDate(store.todayDate) }}</p>
+        </div>
+
+        <!-- Progress indicator -->
+        <div class="flex flex-col items-end gap-1 flex-shrink-0">
+          <span class="text-2xl font-bold tabular-nums">
+            {{ store.workoutProgress.completed }}<span class="text-foreground/40">/{{ store.workoutProgress.total }}</span>
+          </span>
+          <div class="w-24 h-2 bg-foreground/10 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-accent-green transition-all duration-500 ease-out"
+              :style="{ width: `${store.workoutProgress.percentage}%` }"
+            />
+          </div>
+        </div>
+      </div>
     </header>
 
     <!-- Context-Based Recommendation -->
@@ -39,7 +61,7 @@
         :key="phase.value"
         @click="selectedPhase = phase.value"
         :class="[
-          'px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors',
+          'px-5 py-3 min-h-[48px] rounded-xl text-sm font-semibold whitespace-nowrap transition-colors',
           selectedPhase === phase.value
             ? 'bg-accent-green text-white'
             : 'bg-input border border-border text-foreground/60 hover:text-foreground'
@@ -55,8 +77,29 @@
         :key="exercise.id"
         :exercise="exercise"
         :ghost="store.getGhost(exercise.id)"
+        :completed="store.state.todayCompletedExercises.includes(exercise.id)"
         @click="navigateToExercise(exercise.id)"
       />
+
+      <!-- Empty state -->
+      <div
+        v-if="filteredExercises.length === 0"
+        class="flex flex-col items-center justify-center py-20 text-center"
+      >
+        <div class="w-24 h-24 mb-6 text-foreground/20">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-foreground">No exercises in this phase</h3>
+        <p class="text-sm text-foreground/60 max-w-[280px] leading-relaxed">
+          {{ store.hasActiveProgram
+            ? 'This workout day has no exercises. Check your program setup in settings.'
+            : 'Add exercises to this phase to get started with your training.'
+          }}
+        </p>
+      </div>
     </div>
 
     <div class="fixed bottom-0 left-0 right-0 p-6 bg-background border-t border-border">

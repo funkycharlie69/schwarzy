@@ -12,7 +12,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Feet shoulder-width, NO knee locking, control the negative.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 50,
+    defaultReps: 12
   },
   {
     id: 'chest-press-machine',
@@ -20,7 +22,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Seat height: nipples aligned with handles. Tuck elbows slightly.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 25,
+    defaultReps: 12
   },
   {
     id: 'seated-cable-row',
@@ -28,7 +32,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Torso vertical, pull to belly button, squeeze shoulder blades.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 25,
+    defaultReps: 12
   },
   {
     id: 'lat-pulldown',
@@ -36,7 +42,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Lean back slightly, drive elbows down, do NOT pull with hands.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 25,
+    defaultReps: 12
   },
   {
     id: 'face-pulls',
@@ -44,7 +52,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Thumbs back, pull to forehead, spread hands apart. SQUEEZE rear delts.',
     phase: 'rehab',
     repRangeMin: 15,
-    repRangeMax: 20
+    repRangeMax: 20,
+    defaultWeight: 15,
+    defaultReps: 15
   },
   {
     id: 'bicep-curl-machine',
@@ -52,7 +62,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Armpits over pad, slow curl, no swinging. Protect the elbow.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
   },
   {
     id: 'tricep-pushdown-rope',
@@ -60,7 +72,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Elbows glued to ribs, pull rope apart at bottom. Squeeze triceps.',
     phase: 'rehab',
     repRangeMin: 12,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
   },
 
   // --- PHASE 2: FREE WEIGHTS & STABILITY (The Transition) ---
@@ -70,7 +84,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Weight tight to chest, elbows inside knees, sit between heels.',
     phase: 'free-weights',
     repRangeMin: 10,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 15,
+    defaultReps: 10
   },
   {
     id: 'db-floor-press-neutral',
@@ -78,7 +94,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Palms face each other. Lower until elbows TAP floor. Press up.',
     phase: 'free-weights',
     repRangeMin: 10,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 12.5,
+    defaultReps: 10
   },
   {
     id: 'db-hammer-curl',
@@ -86,7 +104,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Thumbs up grip. controlled movement. Best for elbow health.',
     phase: 'free-weights',
     repRangeMin: 10,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 10,
+    defaultReps: 10
   },
   {
     id: 'single-arm-db-row',
@@ -94,7 +114,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Support on bench. Pull dumbbell to hip pocket. Flat back.',
     phase: 'free-weights',
     repRangeMin: 10,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 15,
+    defaultReps: 10
   },
   {
     id: 'walking-lunges',
@@ -102,7 +124,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Torso upright, back knee almost touches floor, drive through front heel.',
     phase: 'free-weights',
     repRangeMin: 10,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 10,
+    defaultReps: 10
   },
   {
     id: 'plank',
@@ -110,7 +134,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Glutes squeezed, core tight, push floor away with forearms.',
     phase: 'free-weights',
     repRangeMin: 30,
-    repRangeMax: 60
+    repRangeMax: 60,
+    defaultWeight: 0,
+    defaultReps: 45
   },
 
   // --- PHASE 3: HYPERTROPHY & STRENGTH (The Future) ---
@@ -120,7 +146,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Bench at 30 degrees. Control weights, feel the upper chest.',
     phase: 'hypertrophy',
     repRangeMin: 8,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 12.5,
+    defaultReps: 10
   },
   {
     id: 'romanian-deadlift-db',
@@ -128,7 +156,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Hips back first, slight knee bend, feel hamstring stretch. Flat back.',
     phase: 'hypertrophy',
     repRangeMin: 8,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 15,
+    defaultReps: 10
   },
   {
     id: 'assisted-pull-up',
@@ -136,7 +166,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Full stretch at bottom, chest to bar at top. No shrugging.',
     phase: 'hypertrophy',
     repRangeMin: 6,
-    repRangeMax: 10
+    repRangeMax: 10,
+    defaultWeight: 30,
+    defaultReps: 8
   },
   {
     id: 'cable-chest-fly',
@@ -144,7 +176,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Slight bend in elbows, hug a big tree. Squeeze chest at center.',
     phase: 'hypertrophy',
     repRangeMin: 10,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 15,
+    defaultReps: 12
   },
   {
     id: 'overhead-press-seated-db',
@@ -152,7 +186,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Core tight, press up but do not lock out fully. Keep elbows forward.',
     phase: 'hypertrophy',
     repRangeMin: 8,
-    repRangeMax: 12
+    repRangeMax: 12,
+    defaultWeight: 10,
+    defaultReps: 10
   },
   {
     id: 'leg-extension',
@@ -160,7 +196,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Toes up, squeeze quads at top. Do not kick, CONTROL.',
     phase: 'hypertrophy',
     repRangeMin: 10,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 25,
+    defaultReps: 12
   },
   {
     id: 'leg-curl',
@@ -168,7 +206,9 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultCue: 'Hips down, curl heels to butt. Squeeze hamstrings.',
     phase: 'hypertrophy',
     repRangeMin: 10,
-    repRangeMax: 15
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
   }
 ];
 
@@ -190,7 +230,8 @@ export const useWorkoutStore = defineStore('workout', () => {
       currentProgram: null,
       currentDayIndex: 0,
       lastWorkoutDate: null
-    }
+    },
+    todayCompletedExercises: []
   })
 
   // Migration: Update exercises if they're missing new properties
@@ -208,6 +249,11 @@ export const useWorkoutStore = defineStore('workout', () => {
         currentDayIndex: 0,
         lastWorkoutDate: null
       }
+    }
+
+    // Migrate todayCompletedExercises if missing
+    if (!state.value.todayCompletedExercises) {
+      state.value.todayCompletedExercises = []
     }
   }
   migrateExercises()
@@ -242,6 +288,14 @@ export const useWorkoutStore = defineStore('workout', () => {
     return state.value.exercises.filter(ex =>
       currentDay.exerciseIds.includes(ex.id)
     )
+  })
+
+  const workoutProgress = computed(() => {
+    const total = todayExercises.value.length
+    const completed = state.value.todayCompletedExercises.filter(id =>
+      todayExercises.value.some(ex => ex.id === id)
+    ).length
+    return { total, completed, percentage: total > 0 ? (completed / total) * 100 : 0 }
   })
 
   // Get last session for an exercise (excluding today)
@@ -359,10 +413,17 @@ export const useWorkoutStore = defineStore('workout', () => {
   const startWorkout = () => {
     state.value.workoutActive = true
     state.value.currentWorkoutDate = todayDate.value
+    state.value.todayCompletedExercises = [] // Reset completed exercises for new day
   }
 
   const saveMachineSetting = (exerciseId: string, setting: string) => {
     state.value.machineSettings[exerciseId] = setting
+  }
+
+  const markExerciseComplete = (exerciseId: string) => {
+    if (!state.value.todayCompletedExercises.includes(exerciseId)) {
+      state.value.todayCompletedExercises.push(exerciseId)
+    }
   }
 
   const saveWorkoutLog = (
@@ -386,6 +447,9 @@ export const useWorkoutStore = defineStore('workout', () => {
     } else {
       state.value.logs.push(newLog)
     }
+
+    // Auto-mark exercise as complete
+    markExerciseComplete(exerciseId)
   }
 
   const finishWorkout = () => {
@@ -543,6 +607,15 @@ export const useWorkoutStore = defineStore('workout', () => {
     }
   }
 
+  // Activate a built-in program
+  const activateBuiltInProgram = (program: any) => {
+    state.value.programState = {
+      currentProgram: program,
+      currentDayIndex: 0,
+      lastWorkoutDate: null
+    }
+  }
+
   // Manually set program day
   const setProgramDay = (dayIndex: number) => {
     const program = state.value.programState.currentProgram
@@ -570,6 +643,7 @@ export const useWorkoutStore = defineStore('workout', () => {
     hasActiveProgram,
     currentProgramDay,
     todayExercises,
+    workoutProgress,
 
     // Methods
     getLastSession,
@@ -580,6 +654,7 @@ export const useWorkoutStore = defineStore('workout', () => {
     saveContext,
     startWorkout,
     saveMachineSetting,
+    markExerciseComplete,
     saveWorkoutLog,
     finishWorkout,
     startRestTimer,
@@ -589,6 +664,7 @@ export const useWorkoutStore = defineStore('workout', () => {
     importData,
     importProgram,
     clearProgram,
+    activateBuiltInProgram,
     setProgramDay,
     getExerciseImageSearchUrl
   }
