@@ -248,8 +248,12 @@ const toggleComplete = () => {
 }
 
 const handleFocus = (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement
+
+  // Select all text for easy replacement
+  target.select()
+
   // Scroll input into view when keyboard appears (iOS)
-  const target = event.target as HTMLElement
   setTimeout(() => {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, 300) // Delay to allow keyboard animation
