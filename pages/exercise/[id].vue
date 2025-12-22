@@ -15,10 +15,10 @@
           <h1 class="text-xl font-bold leading-tight mb-1">{{ exercise?.name }}</h1>
           <p class="text-sm text-foreground/60 leading-snug">{{ exercise?.defaultCue }}</p>
         </div>
-        <div class="flex-shrink-0">
-          <div class="px-2.5 py-1 bg-accent-green/20 border border-accent-green/40 rounded-md">
-            <span class="text-xs font-bold text-accent-green whitespace-nowrap">
-              {{ exercise?.repRangeMin }}-{{ exercise?.repRangeMax }} reps
+        <div class="flex">
+          <div class="px-2.5 py-1 bg-accent-green/20 border border-accent-green/40 rounded-md items-center">
+            <span class="text-lg font-bold text-accent-green text-wrap">
+              {{ exercise?.repRangeMin }}-{{ exercise?.repRangeMax }} <br />reps target
             </span>
           </div>
         </div>
@@ -35,7 +35,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
-        <span class="font-medium">View form</span>
+        <span class="font-medium">View image of machine/exercise</span>
       </a>
     </div>
 
@@ -67,8 +67,22 @@
           :key="index"
           v-model="sets[index]"
           :set-number="index + 1"
+          :can-remove="sets.length > 1"
           @complete="onSetComplete(index)"
+          @remove="removeSet(index)"
         />
+
+        <!-- Add Set Button -->
+        <button
+          @click="addSet"
+          class="w-full h-14 flex items-center justify-center gap-2 bg-foreground/5 border-2 border-dashed border-border hover:border-accent-green/40 hover:bg-foreground/10 rounded-lg font-semibold text-base transition-all active:scale-[0.98]"
+          type="button"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Add Set</span>
+        </button>
 
         <!-- Rep Range Feedback -->
         <div
@@ -236,6 +250,23 @@ const saveMachineSetup = () => {
 const onSetComplete = (index: number) => {
   // Auto-start rest timer
   store.startRestTimer(exerciseId.value, 90)
+}
+
+const addSet = () => {
+  // Get the last set's values as template
+  const lastSet = sets.value[sets.value.length - 1]
+  const newSet = {
+    weight: lastSet.weight,
+    reps: lastSet.reps,
+    completed: false
+  }
+  sets.value.push(newSet)
+}
+
+const removeSet = (index: number) => {
+  // Prevent removing the last set
+  if (sets.value.length <= 1) return
+  sets.value.splice(index, 1)
 }
 
 const handleBack = () => {

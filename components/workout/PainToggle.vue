@@ -51,7 +51,7 @@ const options = [
   },
   {
     value: 'danger' as PainRating,
-    label: 'Danger',
+    label: 'Pain',
     icon: '🔴',
     activeClass: 'bg-accent-red border-2 border-accent-red text-white'
   }

@@ -1,13 +1,27 @@
 <template>
   <div :class="['space-y-2', justCompleted ? 'animate-set-complete' : '']">
     <!-- Set label row -->
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 flex items-center justify-center bg-foreground/10 rounded-full text-sm font-bold">
-        {{ setNumber }}
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 flex items-center justify-center bg-foreground/10 rounded-full text-sm font-bold">
+          {{ setNumber }}
+        </div>
+        <span class="text-lg font-semibold">
+          {{ completed ? 'Set ' + setNumber + ' - Completed' : 'Set ' + setNumber }}
+        </span>
       </div>
-      <span class="text-sm font-semibold text-foreground/70">
-        {{ completed ? 'Set ' + setNumber + ' - Completed' : 'Set ' + setNumber }}
-      </span>
+      <button
+        v-if="canRemove"
+        @click="$emit('remove')"
+        class="w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-accent-red hover:bg-accent-red/10 rounded-full transition-all active:scale-95"
+        type="button"
+        aria-label="Remove set"
+        title="Remove set"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
 
     <!-- Input sections stacked vertically for mobile -->
@@ -18,8 +32,8 @@
         <div class="flex items-center gap-2.5">
           <button
             v-if="!completed"
-            @click="adjustWeight(-2.5)"
-            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            @click.prevent="adjustWeight(-2.5)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all touch-manipulation"
             type="button"
             aria-label="Decrease weight"
           >
@@ -44,8 +58,8 @@
           />
           <button
             v-if="!completed"
-            @click="adjustWeight(2.5)"
-            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            @click.prevent="adjustWeight(2.5)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all touch-manipulation"
             type="button"
             aria-label="Increase weight"
           >
@@ -62,8 +76,8 @@
         <div class="flex items-center gap-2.5">
           <button
             v-if="!completed"
-            @click="adjustReps(-1)"
-            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            @click.prevent="adjustReps(-1)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all touch-manipulation"
             type="button"
             aria-label="Decrease reps"
           >
@@ -87,8 +101,8 @@
           />
           <button
             v-if="!completed"
-            @click="adjustReps(1)"
-            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all"
+            @click.prevent="adjustReps(1)"
+            class="w-14 h-14 flex items-center justify-center bg-foreground/5 border border-border rounded-lg text-foreground hover:bg-foreground/10 active:scale-95 transition-all touch-manipulation"
             type="button"
             aria-label="Increase reps"
           >
@@ -134,6 +148,7 @@ interface Props {
     completed: boolean
   }
   setNumber: number
+  canRemove?: boolean
 }
 
 const props = defineProps<Props>()
@@ -141,6 +156,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   'update:modelValue': [value: { weight: number; reps: number; completed: boolean }]
   'complete': []
+  'remove': []
 }>()
 
 const weight = ref(props.modelValue.weight || 0)
@@ -241,6 +257,13 @@ const handleFocus = (event: FocusEvent) => {
 </script>
 
 <style scoped>
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
 .icon-swap-enter-active,
 .icon-swap-leave-active {
   transition: all 0.15s ease;
