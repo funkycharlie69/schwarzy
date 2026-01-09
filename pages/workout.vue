@@ -79,6 +79,7 @@
         :ghost="store.getGhost(exercise.id)"
         :completed="store.state.todayCompletedExercises.includes(exercise.id)"
         @click="navigateToExercise(exercise.id)"
+        @long-press="handleLongPress(exercise)"
       />
 
       <!-- Empty state -->
@@ -113,16 +114,29 @@
     </div>
 
     <RestTimer />
+
+    <!-- Exercise Selector Modal -->
+    <ExerciseSelectorModal
+      :is-open="showExerciseSelector"
+      :current-exercise="exerciseToReplace"
+      @select="handleExerciseReplace"
+      @cancel="closeExerciseSelector"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useWorkoutStore } from '~/stores/workout'
+import type { Exercise } from '~/types'
 
 const store = useWorkoutStore()
 const router = useRouter()
 
 const selectedPhase = ref<'rehab' | 'free-weights' | 'hypertrophy'>('rehab')
+
+// Exercise replacement state
+const showExerciseSelector = ref(false)
+const exerciseToReplace = ref<Exercise | null>(null)
 
 const phases = [
   { value: 'rehab', label: 'Rehab & Machines' },
@@ -185,6 +199,38 @@ const navigateToExercise = (exerciseId: string) => {
 
 const finishWorkout = () => {
   router.push('/summary')
+}
+
+// Exercise replacement handlers
+const handleLongPress = (exercise: Exercise) => {
+  // Only allow replacement in program mode
+  if (!store.hasActiveProgram) return
+
+  exerciseToReplace.value = exercise
+  showExerciseSelector.value = true
+}
+
+const handleExerciseReplace = (newExercise: Exercise) => {
+  if (!exerciseToReplace.value) return
+
+  const success = store.replaceExerciseInWorkout(
+    exerciseToReplace.value.id,
+    newExercise.id
+  )
+
+  if (success) {
+    // Haptic feedback for success
+    if ('vibrate' in navigator) {
+      navigator.vibrate([50, 50, 50])
+    }
+  }
+
+  closeExerciseSelector()
+}
+
+const closeExerciseSelector = () => {
+  showExerciseSelector.value = false
+  exerciseToReplace.value = null
 }
 
 onMounted(() => {

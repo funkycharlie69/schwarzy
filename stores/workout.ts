@@ -626,6 +626,29 @@ export const useWorkoutStore = defineStore('workout', () => {
     }
   }
 
+  // Replace an exercise in the current workout
+  const replaceExerciseInWorkout = (oldExerciseId: string, newExerciseId: string): boolean => {
+    // If in program mode, replace in the current day's exercise list
+    if (hasActiveProgram.value && state.value.programState.currentProgram) {
+      const currentDay = state.value.programState.currentProgram.days[state.value.programState.currentDayIndex]
+      const index = currentDay.exerciseIds.indexOf(oldExerciseId)
+
+      if (index !== -1) {
+        currentDay.exerciseIds[index] = newExerciseId
+
+        // If the old exercise was marked as completed, transfer that to the new exercise
+        const completedIndex = state.value.todayCompletedExercises.indexOf(oldExerciseId)
+        if (completedIndex !== -1) {
+          state.value.todayCompletedExercises[completedIndex] = newExerciseId
+        }
+
+        return true
+      }
+    }
+
+    return false
+  }
+
   // Get Google Image Search URL for exercise
   const getExerciseImageSearchUrl = (exercise: Exercise): string => {
     const query = exercise.imageSearchQuery || `${exercise.name} gym machine`
@@ -666,6 +689,7 @@ export const useWorkoutStore = defineStore('workout', () => {
     clearProgram,
     activateBuiltInProgram,
     setProgramDay,
+    replaceExerciseInWorkout,
     getExerciseImageSearchUrl
   }
 })

@@ -1,11 +1,13 @@
 <template>
   <div
-    @click="$emit('click')"
+    @click="handleClick"
+    v-bind="longPressHandlers"
     :class="[
-      'relative bg-input border-2 rounded-xl p-4 cursor-pointer transition-all active:scale-[0.98]',
+      'relative bg-input border-2 rounded-xl p-4 cursor-pointer transition-all',
       completed
         ? 'border-accent-green/50 bg-accent-green/5'
-        : 'border-border hover:border-foreground/30'
+        : 'border-border hover:border-foreground/30',
+      isLongPressing ? 'scale-95 border-accent-blue' : 'active:scale-[0.98]'
     ]"
   >
     <!-- Completion checkmark badge -->
@@ -32,6 +34,7 @@
 <script setup lang="ts">
 import { Check } from 'lucide-vue-next'
 import type { Exercise, GhostSession } from '~/types'
+import { useLongPress } from '~/composables/useLongPress'
 
 interface Props {
   exercise: Exercise
@@ -39,9 +42,41 @@ interface Props {
   completed?: boolean
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
-defineEmits<{
+const emit = defineEmits<{
   click: []
+  longPress: []
 }>()
+
+// Long press detection
+const isLongPressing = ref(false)
+let longPressTriggered = false
+
+const { handlers: longPressHandlers } = useLongPress({
+  delay: 500,
+  onStart: () => {
+    isLongPressing.value = true
+    longPressTriggered = false
+  },
+  onLongPress: () => {
+    // Haptic feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50)
+    }
+    longPressTriggered = true
+    emit('longPress')
+  },
+  onCancel: () => {
+    isLongPressing.value = false
+  }
+})
+
+const handleClick = () => {
+  // Only emit click if it wasn't a long press
+  if (!longPressTriggered) {
+    emit('click')
+  }
+  longPressTriggered = false
+}
 </script>
