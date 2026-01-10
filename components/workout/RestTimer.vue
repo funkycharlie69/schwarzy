@@ -2,12 +2,12 @@
   <Transition name="timer-overlay">
     <div
       v-if="isActive"
-      class="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6"
+      class="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
     >
       <!-- Skip button top right -->
       <button
         @click="clearTimer"
-        class="absolute top-6 right-6 text-base font-semibold text-foreground/60 hover:text-foreground active:text-accent-red px-4 py-2 min-h-[44px]"
+        class="absolute top-[calc(1.5rem+env(safe-area-inset-top))] right-6 text-base font-semibold text-foreground/60 hover:text-foreground active:text-accent-red px-4 py-2 min-h-[44px]"
       >
         Skip Rest
       </button>

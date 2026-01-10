@@ -1,5 +1,5 @@
 <template>
-  <div class="dark">
+  <div class="dark fixed inset-0 overflow-auto">
     <NuxtPage />
   </div>
 </template>

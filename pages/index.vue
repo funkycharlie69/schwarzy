@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen p-6 flex flex-col">
-    <header class="mb-8 mt-4">
+  <div class="min-h-screen p-6 flex flex-col pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+    <header class="mb-8 mt-[calc(1rem+env(safe-area-inset-top))]">
       <h1 class="text-3xl font-bold mb-2">How are you feeling today?</h1>
       <p class="text-foreground/60">Let's log your context before starting</p>
     </header>

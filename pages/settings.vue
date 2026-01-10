@@ -104,7 +104,7 @@ const showError = (message: string) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background p-4 md:p-6 pb-32">
+  <div class="min-h-screen bg-background p-4 md:p-6 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(8rem+env(safe-area-inset-bottom))]">
     <!-- Header -->
     <div class="mb-6 md:mb-8">
       <NuxtLink

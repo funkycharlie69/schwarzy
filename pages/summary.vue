@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-6">
+  <div class="min-h-screen p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
     <header class="mb-8">
       <h1 class="text-3xl font-bold mb-2">Workout Complete! 🎉</h1>
       <p class="text-foreground/60">{{ formatDate(store.todayDate) }}</p>

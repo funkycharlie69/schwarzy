@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'min-h-screen p-6 transition-all duration-300',
+      'min-h-screen p-6 transition-all duration-300 pt-[calc(1.5rem+env(safe-area-inset-top))]',
       store.state.restTimerState.endTime ? 'pb-48' : 'pb-32'
     ]"
   >
@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 right-0 p-6 bg-background border-t border-border">
+    <div class="fixed bottom-0 left-0 right-0 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-background border-t border-border">
       <BaseButton
         @click="finishWorkout"
         variant="secondary"

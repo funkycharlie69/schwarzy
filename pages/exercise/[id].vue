@@ -1,7 +1,7 @@
 <template>
-  <div :key="exerciseId" class="min-h-screen pb-24">
+  <div :key="exerciseId" class="min-h-screen pb-[calc(6rem+env(safe-area-inset-bottom))]">
     <!-- Header -->
-    <div class="sticky top-0 bg-background border-b border-border px-4 py-3 z-10">
+    <div class="sticky top-0 bg-background border-b border-border px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] z-10">
       <button
         @click="handleBack"
         class="flex items-center gap-2 min-h-[44px] min-w-[44px] -ml-3 px-3 rounded-lg active:bg-foreground/10 transition-colors text-foreground/60 hover:text-foreground mb-3"
