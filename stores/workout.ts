@@ -76,6 +76,86 @@ const DEFAULT_EXERCISES: Exercise[] = [
     defaultWeight: 20,
     defaultReps: 12
   },
+  {
+    id: 'shoulder-press-machine',
+    name: 'Shoulder Press (Machine)',
+    defaultCue: 'Seat height: handles at shoulder level. Press up, slight bend at top.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
+  },
+  {
+    id: 'lateral-raise-machine',
+    name: 'Lateral Raise (Machine)',
+    defaultCue: 'Elbows on pads, raise to shoulder height. Control the negative.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 15,
+    defaultReps: 12
+  },
+  {
+    id: 'tricep-press-machine',
+    name: 'Tricep Press (Machine)',
+    defaultCue: 'Elbows stable, press down. Full extension without locking.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
+  },
+  {
+    id: 'pec-fly-machine',
+    name: 'Pec Fly (Machine)',
+    defaultCue: 'Seat height: handles at chest level. Squeeze chest at center.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 25,
+    defaultReps: 12
+  },
+  {
+    id: 'rear-delt-fly-machine',
+    name: 'Rear Delt Fly (Machine)',
+    defaultCue: 'Chest against pad, pull handles back. Squeeze shoulder blades.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 20,
+    defaultReps: 12
+  },
+  {
+    id: 'assisted-dip',
+    name: 'Dip (Assisted)',
+    defaultCue: 'Lean forward slightly, elbows back. Full depth, control up.',
+    phase: 'rehab',
+    repRangeMin: 8,
+    repRangeMax: 12,
+    defaultWeight: 30,
+    defaultReps: 10
+  },
+  {
+    id: 'assisted-chin-up',
+    name: 'Chin-Up (Assisted)',
+    defaultCue: 'Palms facing you, chin over bar. Squeeze biceps and lats.',
+    phase: 'rehab',
+    repRangeMin: 6,
+    repRangeMax: 10,
+    defaultWeight: 30,
+    defaultReps: 8
+  },
+  {
+    id: 'glute-bridge-machine',
+    name: 'Glute Bridge (Machine)',
+    defaultCue: 'Feet flat, drive through heels. Squeeze glutes at top.',
+    phase: 'rehab',
+    repRangeMin: 12,
+    repRangeMax: 15,
+    defaultWeight: 30,
+    defaultReps: 12
+  },
 
   // --- PHASE 2: FREE WEIGHTS & STABILITY (The Transition) ---
   {
@@ -169,6 +249,16 @@ const DEFAULT_EXERCISES: Exercise[] = [
     repRangeMax: 10,
     defaultWeight: 30,
     defaultReps: 8
+  },
+  {
+    id: 'pullup-bar',
+    name: 'Pull-Up (Unassisted)',
+    defaultCue: 'Full hang, pull chest to bar. Control the descent.',
+    phase: 'hypertrophy',
+    repRangeMin: 5,
+    repRangeMax: 10,
+    defaultWeight: 0,
+    defaultReps: 6
   },
   {
     id: 'cable-chest-fly',

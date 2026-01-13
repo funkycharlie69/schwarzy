@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "program": {
+    "name": "Machine-Focused 4-Day Split",
+    "description": "Comprehensive program using all available gym machines for balanced development",
+    "days": [
+      {
+        "dayNumber": 1,
+        "name": "Push A (Chest, Shoulders, Triceps)",
+        "exerciseIds": [
+          "chest-press-machine",
+          "pec-fly-machine",
+          "shoulder-press-machine",
+          "lateral-raise-machine",
+          "tricep-press-machine",
+          "tricep-pushdown-rope",
+          "assisted-dip"
+        ]
+      },
+      {
+        "dayNumber": 2,
+        "name": "Pull A (Back, Biceps)",
+        "exerciseIds": [
+          "lat-pulldown",
+          "seated-cable-row",
+          "assisted-pull-up",
+          "rear-delt-fly-machine",
+          "face-pulls",
+          "bicep-curl-machine",
+          "assisted-chin-up"
+        ]
+      },
+      {
+        "dayNumber": 3,
+        "name": "Legs A (Quads, Hamstrings, Glutes)",
+        "exerciseIds": [
+          "leg-press",
+          "leg-extension",
+          "leg-curl",
+          "glute-bridge-machine",
+          "goblet-squat",
+          "walking-lunges"
+        ]
+      },
+      {
+        "dayNumber": 4,
+        "name": "Push B (Strength Focus)",
+        "exerciseIds": [
+          "incline-db-press",
+          "chest-press-machine",
+          "overhead-press-seated-db",
+          "shoulder-press-machine",
+          "lateral-raise-machine",
+          "tricep-pushdown-rope"
+        ]
+      },
+      {
+        "dayNumber": 5,
+        "name": "Pull B (Volume Focus)",
+        "exerciseIds": [
+          "pullup-bar",
+          "lat-pulldown",
+          "single-arm-db-row",
+          "seated-cable-row",
+          "face-pulls",
+          "db-hammer-curl"
+        ]
+      },
+      {
+        "dayNumber": 6,
+        "name": "Legs B (Hamstring & Glute Focus)",
+        "exerciseIds": [
+          "romanian-deadlift-db",
+          "leg-curl",
+          "glute-bridge-machine",
+          "leg-press",
+          "leg-extension",
+          "plank"
+        ]
+      }
+    ]
+  }
+}

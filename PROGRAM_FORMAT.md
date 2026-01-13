@@ -15,6 +15,14 @@ Here are all the exercise IDs you can use in your programs:
 - `face-pulls` - Cable Face Pulls
 - `bicep-curl-machine` - Bicep Curl (Machine)
 - `tricep-pushdown-rope` - Tricep Pushdown (Rope)
+- `shoulder-press-machine` - Shoulder Press (Machine)
+- `lateral-raise-machine` - Lateral Raise (Machine)
+- `tricep-press-machine` - Tricep Press (Machine)
+- `pec-fly-machine` - Pec Fly (Machine)
+- `rear-delt-fly-machine` - Rear Delt Fly (Machine)
+- `assisted-dip` - Dip (Assisted)
+- `assisted-chin-up` - Chin-Up (Assisted)
+- `glute-bridge-machine` - Glute Bridge (Machine)
 
 ### Phase 2: Free Weights & Stability
 - `goblet-squat` - Goblet Squat
@@ -28,6 +36,7 @@ Here are all the exercise IDs you can use in your programs:
 - `incline-db-press` - Incline DB Press
 - `romanian-deadlift-db` - Romanian Deadlift (Dumbbells)
 - `assisted-pull-up` - Assisted Pull-Up
+- `pullup-bar` - Pull-Up (Unassisted)
 - `cable-chest-fly` - Cable Chest Fly
 - `overhead-press-seated-db` - Seated DB Overhead Press
 - `leg-extension` - Leg Extension
@@ -104,7 +113,7 @@ If you want to add exercises that aren't in the default list, include an `exerci
 
 ## Sample Programs
 
-Two sample programs are included in the `sample-programs/` directory:
+Four sample programs are included in the `sample-programs/` directory:
 
 ### 1. Upper/Lower 4-Day Split (`upper-lower-split.json`)
 - Day 1: Upper A (6 exercises)
@@ -119,6 +128,19 @@ Two sample programs are included in the `sample-programs/` directory:
 - Day 4: Push B (4 exercises)
 - Day 5: Pull B (4 exercises)
 - Day 6: Legs B (4 exercises)
+
+### 3. Machine-Focused 4-Day Split (`machine-focused-split.json`)
+- Day 1: Push A - Chest, Shoulders, Triceps (7 exercises)
+- Day 2: Pull A - Back, Biceps (7 exercises)
+- Day 3: Legs A - Quads, Hamstrings, Glutes (6 exercises)
+- Day 4: Push B - Strength Focus (6 exercises)
+- Day 5: Pull B - Volume Focus (6 exercises)
+- Day 6: Legs B - Hamstring & Glute Focus (6 exercises)
+
+### 4. Machine-Only 3-Day Full Body (`machine-only-3day.json`)
+- Day 1: Full Body A (7 exercises)
+- Day 2: Full Body B (7 exercises)
+- Day 3: Full Body C (7 exercises)
 
 ## Creating Your Own Program
 
