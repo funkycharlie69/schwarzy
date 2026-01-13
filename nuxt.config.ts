@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@vite-pwa/nuxt'
   ],
 
   components: [
@@ -56,5 +57,41 @@ export default defineNuxtConfig({
     }
   },
 
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'Schwarzy - Gym Companion',
+      short_name: 'Schwarzy',
+      description: 'Your intelligent gym workout tracker',
+      theme_color: '#09090b',
+      background_color: '#09090b',
+      display: 'standalone',
+      start_url: '/',
+      icons: [
+        {
+          src: '/icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: '/icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png'
+        }
+      ]
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}']
+    },
+    client: {
+      installPrompt: true
+    },
+    devOptions: {
+      enabled: true,
+      type: 'module'
+    }
+  }
 })
