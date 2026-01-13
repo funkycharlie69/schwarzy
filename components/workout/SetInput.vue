@@ -3,10 +3,10 @@
     <!-- Set label row -->
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 flex items-center justify-center bg-foreground/10 rounded-full text-sm font-bold">
+        <div class="w-8 h-8 flex items-center justify-center bg-foreground/10 rounded-full text-xl font-bold">
           {{ setNumber }}
         </div>
-        <span class="text-lg font-semibold">
+        <span class="text-4xl font-semibold">
           {{ completed ? 'Set ' + setNumber + ' - Completed' : 'Set ' + setNumber }}
         </span>
       </div>

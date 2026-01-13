@@ -2,13 +2,26 @@
   <div :key="exerciseId" class="min-h-screen pb-[calc(6rem+env(safe-area-inset-bottom))]">
     <!-- Header -->
     <div class="sticky top-0 bg-background border-b border-border px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] z-10">
-      <button
-        @click="handleBack"
-        class="flex items-center gap-2 min-h-[44px] min-w-[44px] -ml-3 px-3 rounded-lg active:bg-foreground/10 transition-colors text-foreground/60 hover:text-foreground mb-3"
-      >
-        <ChevronLeft :size="20" />
-        <span class="text-sm font-medium">Back</span>
-      </button>
+      <div class="flex items-center justify-between mb-3">
+        <button
+          @click="handleBack"
+          class="flex items-center gap-2 min-h-[44px] min-w-[44px] -ml-3 px-3 rounded-lg active:bg-foreground/10 transition-colors text-foreground/60 hover:text-foreground"
+        >
+          <ChevronLeft :size="20" />
+          <span class="text-sm font-medium">Back</span>
+        </button>
+
+        <!-- Settings Button -->
+        <NuxtLink
+          to="/settings"
+          class="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg text-foreground/60 hover:text-foreground hover:bg-foreground/10 active:bg-foreground/20 transition-colors touch-manipulation"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </NuxtLink>
+      </div>
 
       <div class="flex items-start justify-between gap-3 mb-2">
         <div class="flex-1 min-w-0">
@@ -117,14 +130,14 @@
     </div>
 
     <ConfirmModal
-      :is-open="showBackConfirm"
-      title="Unsaved Sets"
-      message="You have unsaved sets. Are you sure you want to go back? Your progress will be lost."
-      confirm-text="Discard"
-      cancel-text="Keep Editing"
+      :is-open="showDeleteConfirm"
+      title="Delete Completed Set?"
+      message="This set has been logged. Are you sure you want to delete it?"
+      confirm-text="Delete"
+      cancel-text="Cancel"
       danger
-      @confirm="router.back()"
-      @cancel="showBackConfirm = false"
+      @confirm="confirmDeleteSet"
+      @cancel="showDeleteConfirm = false"
     />
 
     <RestTimer />
@@ -172,7 +185,13 @@ const getDefaultSets = () => {
 
 const sets = ref(getDefaultSets())
 const rating = ref<PainRating>(existingLog.value?.rating || 'strong')
-const showBackConfirm = ref(false)
+
+// Auto-save when rating changes (if there are completed sets)
+watch(rating, () => {
+  if (hasCompletedSets.value) {
+    autoSave()
+  }
+})
 
 // Watch for route changes to reset data when navigating to a different exercise
 watch(() => route.params.id, (newId) => {
@@ -248,6 +267,9 @@ const saveMachineSetup = () => {
 }
 
 const onSetComplete = (index: number) => {
+  // Auto-save whenever a set is completed
+  autoSave()
+
   // Auto-start rest timer
   store.startRestTimer(exerciseId.value, 90)
 }
@@ -263,24 +285,43 @@ const addSet = () => {
   sets.value.push(newSet)
 }
 
+const showDeleteConfirm = ref(false)
+const setToDelete = ref<number | null>(null)
+
 const removeSet = (index: number) => {
   // Prevent removing the last set
   if (sets.value.length <= 1) return
-  sets.value.splice(index, 1)
-}
 
-const handleBack = () => {
-  // Check if there are unsaved changes (completed sets)
-  const hasUnsavedChanges = hasCompletedSets.value && !existingLog.value
-
-  if (hasUnsavedChanges) {
-    showBackConfirm.value = true
+  // If the set is completed, show confirmation
+  if (sets.value[index].completed) {
+    setToDelete.value = index
+    showDeleteConfirm.value = true
   } else {
-    router.back()
+    // Uncompleted sets can be deleted immediately
+    sets.value.splice(index, 1)
   }
 }
 
-const saveAndReturn = () => {
+const confirmDeleteSet = () => {
+  if (setToDelete.value !== null) {
+    sets.value.splice(setToDelete.value, 1)
+    autoSave() // Update the store after deletion
+    router.go(0) // Refresh the page
+  }
+  showDeleteConfirm.value = false
+  setToDelete.value = null
+}
+
+const handleBack = () => {
+  // Auto-save before navigating back
+  if (hasCompletedSets.value) {
+    autoSave()
+  }
+  router.back()
+}
+
+const autoSave = () => {
+  // Only auto-save if there are completed sets
   if (!hasCompletedSets.value) return
 
   store.saveWorkoutLog(
@@ -288,6 +329,13 @@ const saveAndReturn = () => {
     sets.value,
     rating.value
   )
+}
+
+const saveAndReturn = () => {
+  if (!hasCompletedSets.value) return
+
+  // Final save with current rating
+  autoSave()
 
   router.back()
 }

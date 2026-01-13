@@ -107,7 +107,21 @@ const showError = (message: string) => {
   <div class="min-h-screen bg-background p-4 md:p-6 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(8rem+env(safe-area-inset-bottom))]">
     <!-- Header -->
     <div class="mb-6 md:mb-8">
+      <!-- Back to Workout (shown when workout is active) -->
       <NuxtLink
+        v-if="store.state.workoutActive"
+        to="/workout"
+        class="inline-flex items-center gap-2 text-accent-green hover:underline mb-3 min-h-11 active:opacity-70 transition-opacity"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="text-base font-medium">Back to Workout</span>
+      </NuxtLink>
+
+      <!-- Back to Home (shown when no workout is active) -->
+      <NuxtLink
+        v-else
         to="/"
         class="inline-flex items-center gap-2 text-accent-green hover:underline mb-3 min-h-11 active:opacity-70 transition-opacity"
       >
@@ -116,6 +130,7 @@ const showError = (message: string) => {
         </svg>
         <span class="text-base font-medium">Back to Home</span>
       </NuxtLink>
+
       <h1 class="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Settings</h1>
     </div>
 
