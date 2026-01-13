@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-6 flex flex-col pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+  <div class="p-6 flex flex-col pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
     <header class="mb-8 mt-[env(safe-area-inset-top)]">
       <h1 class="text-3xl font-bold mb-2">Warm-up Checklist</h1>
       <p class="text-foreground/60">Complete these before starting your workout</p>
